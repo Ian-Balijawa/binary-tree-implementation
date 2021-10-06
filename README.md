@@ -76,3 +76,9 @@ Removing nodes is easy. After removing a node, we replace the node with either i
 Note the replacement needs to happen when the node has at least one child. If it has no child, you just disconnect it from its parent:
 
 ![Deleting a leaf node](Images/DeleteLeaf.png)
+# The code (solution 1)
+
+So much for the theory. Let's see how we can implement a binary search tree in Java. There are different approaches you can take. First, I will show you how to make a class-based version, but we will also look at how to make one using enums.
+
+Here is an example for a `BinarySearchTree` class:
+
