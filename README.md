@@ -8,7 +8,7 @@
 
     Here is an example of a valid binary search tree:
 
-![A binary search tree](Images/Tree1.png)
+![A binary search tree](/Images/Tree1.png)
 
     Notice how each left child is smaller than its parent node, and each right child is greater than its parent node. This is the key feature of a binary search tree.
 
