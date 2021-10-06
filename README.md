@@ -1,8 +1,8 @@
-# binary search tree implementation in java 
+# binary search tree implementation in java
+
 # Binary Search Tree (BST)
 
     A binary search tree is a special kind of [binary tree](../Binary%20Tree/) (a tree in which each node has at most two children) that performs insertions and deletions such that the tree is always sorted.
-
 
 ## "Always sorted" property
 
@@ -31,7 +31,7 @@
 
     There is only one possible place where the new element can be inserted in the tree. Finding this place is usually quick. It takes **O(h)** time, where **h** is the height of the tree.
 
-> **Note:** The *height* of a node is the number of steps it takes to go from that node to its lowest leaf. The height of the entire tree is the distance from the root to the lowest leaf. Many of the operations on a binary search tree are expressed in terms of the tree's height.
+> **Note:** The _height_ of a node is the number of steps it takes to go from that node to its lowest leaf. The height of the entire tree is the distance from the root to the lowest leaf. Many of the operations on a binary search tree are expressed in terms of the tree's height.
 
 By following this simple rule -- smaller values on the left, larger values on the right -- we keep the tree sorted, so whenever we query it, we can check if a value is in the tree.
 
@@ -57,9 +57,9 @@ Sometimes you need to look at all nodes rather than only one.
 
 There are three ways to traverse a binary tree:
 
-1. *In-order* (or *depth-first*): first look at the left child of a node then at the node itself and finally at its right child.
-2. *Pre-order*: first look at a node then its left and right children.
-3. *Post-order*: first look at the left and right children and process the node itself last.
+1. _In-order_ (or _depth-first_): first look at the left child of a node then at the node itself and finally at its right child.
+2. _Pre-order_: first look at a node then its left and right children.
+3. _Post-order_: first look at the left and right children and process the node itself last.
 
 Traversing the tree also happens recursively.
 
@@ -76,9 +76,155 @@ Removing nodes is easy. After removing a node, we replace the node with either i
 Note the replacement needs to happen when the node has at least one child. If it has no child, you just disconnect it from its parent:
 
 ![Deleting a leaf node](Images/DeleteLeaf.png)
+
 # The code (solution 1)
 
 So much for the theory. Let's see how we can implement a binary search tree in Java. There are different approaches you can take. First, I will show you how to make a class-based version, but we will also look at how to make one using enums.
 
 Here is an example for a `BinarySearchTree` class:
 
+```Java
+
+public class Tree<E> {
+  private class Node<T> {
+    private E value;
+    private Node<T> leftChild;
+    private Node<T> rightChild;
+
+    public Node(E value) {
+      this.value = value;
+    }
+
+    @Override
+    public String toString() {
+      return "Node= " + value;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      // nodes are equal if they have the same data or value
+
+      return (int) this.value == (int) obj ? true : false;
+    }
+  }
+```
+
+# Creating the root node
+
+````java
+  private Node<E> root;
+  ```
+````
+
+# code for insering a node to the tree
+
+`````java
+
+    public void insert(E value) {
+    var node = new Node<E>(value);
+
+    if (root == null) {
+      root = node;
+      return;
+    }
+
+    var current = root;
+    while (true) {
+      if (((Comparable<E>) current.value).compareTo(value) > 0) {
+        if (current.leftChild == null) {
+          current.leftChild = node;
+          break;
+        }
+
+        current = current.leftChild;
+      } else {
+        if (current.rightChild == null) {
+          current.rightChild = node;
+          break;
+        }
+
+        current = current.rightChild;
+      }
+    }
+ }
+
+```
+
+# code to find a node a the tree
+    ````Java
+
+public boolean find(E value) {
+    var current = root;
+    while (current != null) {
+
+      if (((Comparable<E>) value).compareTo(current.value) < 0)
+        current = current.leftChild;
+      else if (((Comparable<E>) value).compareTo(current.value) > 0)
+        current = current.rightChild;
+      else
+        return true;
+    }
+
+    return false;
+  }
+`````
+
+# Traversal Algorithms
+
+```java
+    public void traversePreOrder() {
+    traversePreOrder(root);
+  }
+
+  private void traversePreOrder(Node<E> root) {
+    if (root == null)
+      return;
+    System.out.println(root.value);
+    traversePreOrder(root.leftChild);
+    traversePreOrder(root.rightChild);
+  }
+
+  public void traversePostOrder() {
+    traversePostOrder(root);
+  }
+
+  private void traversePostOrder(Node<E> root) {
+    if (root == null)
+      return;
+    traversePreOrder(root.leftChild);
+    traversePreOrder(root.rightChild);
+    System.out.println(root.value);
+  }
+
+  public void traverseLevelOrder() {
+    traverseLevelOrder(root);
+  }
+
+  private void traverseLevelOrder(Node<E> root) {
+    if (root == null)
+      return;
+
+    traverseLevelOrder(root.leftChild);
+    System.out.println(root.value);
+    traverseLevelOrder(root.rightChild);
+  }
+
+```
+
+# Inverting a binary tree
+
+```Java
+public void invertBinaryTree() {
+    invertBinaryTree(root);
+  }
+
+  private void invertBinaryTree(Node<E> node) {
+    if (node == null)
+      return;
+    Node<E> tmp = node.leftChild;
+    node.leftChild = node.rightChild;
+    node.rightChild = tmp;
+    invertBinaryTree(node.leftChild);
+    invertBinaryTree(node.rightChild);
+  }
+```
